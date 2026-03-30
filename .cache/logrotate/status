@@ -1,0 +1,20 @@
+logrotate state -- version 2
+"/home/a/.cache/upstart/indicator-application.log" 2026-3-27-16:11:6
+"/home/a/.cache/upstart/unity7.log" 2026-3-29-21:2:24
+"/home/a/.cache/upstart/gnome-session-Unity.log" 2026-3-29-21:2:24
+"/home/a/.cache/upstart/ssh-agent.log" 2026-3-29-21:2:24
+"/home/a/.cache/upstart/window-stack-bridge.log" 2026-3-29-21:2:24
+"/home/a/.cache/upstart/update-notifier-release.log" 2026-3-29-21:2:24
+"/home/a/.cache/upstart/at-spi2-registryd.log" 2026-3-29-21:2:24
+"/home/a/.cache/upstart/hud.log" 2026-3-29-21:2:24
+"/home/a/.cache/upstart/gnome-keyring-gpg.log" 2026-3-29-21:2:24
+"/home/a/.cache/upstart/dbus.log" 2026-3-29-21:2:24
+"/home/a/.cache/upstart/unity-settings-daemon.log" 2026-3-29-21:2:24
+"/home/a/.cache/upstart/indicator-power.log" 2026-3-29-21:2:24
+"/home/a/.cache/upstart/indicator-bluetooth.log" 2026-3-29-21:2:24
+"/home/a/.cache/upstart/im-config.log" 2026-3-29-21:2:24
+"/home/a/.cache/upstart/indicator-printers.log" 2026-3-29-21:2:24
+"/home/a/.cache/upstart/indicator-sound.log" 2026-3-29-21:2:24
+"/home/a/.cache/upstart/gnome-keyring-ssh.log" 2026-3-29-21:2:24
+"/home/a/.cache/upstart/unity-panel-service.log" 2026-3-29-21:2:24
+"/home/a/.cache/upstart/update-notifier-crash-_var_crash__usr_bin_vim.basic.1000.crash.log" 2026-3-29-21:2:24
