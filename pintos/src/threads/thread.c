@@ -389,24 +389,25 @@ donation_priority_more (const struct list_elem *a,
 
 /* 선점 검사 및 수행 */
 void
-thread_test_preemption (void)
-{
-  if (list_empty (&ready_list))
+ thread_test_preemption(void) {
+  if (list_empty(&ready_list))
     return;
 
-  list_sort (&ready_list, thread_priority_more, NULL);
+  enum intr_level old_level = intr_disable();
 
-  struct thread *cur = thread_current ();
-  struct thread *front = list_entry (list_front (&ready_list),
-                                     struct thread, elem);
+  list_sort(&ready_list, thread_priority_more, NULL);
 
-  if (cur != idle_thread && cur->priority < front->priority)
-    {
-      if (intr_context ())
-        intr_yield_on_return ();
-      else
-        thread_yield ();
-    }
+  struct thread *cur = thread_current();
+  struct thread *front = list_entry(list_front(&ready_list), struct thread, elem);
+
+  if (cur != idle_thread && cur->priority < front->priority) {
+    if (intr_context())
+      intr_yield_on_return();
+    else
+      thread_yield();
+  }
+
+  intr_set_level(old_level);
 }
 
 /* Priority Donation: lock을 기다리는 스레드가 holder에게 priority 전파 */
