@@ -388,10 +388,11 @@ donation_priority_more (const struct list_elem *a,
 }
 
 /* 선점 검사 및 수행 */
-void
- thread_test_preemption(void) {
+void 
+thread_test_preemption(void) {
   if (list_empty(&ready_list))
     return;
+
 
   enum intr_level old_level = intr_disable();
 
