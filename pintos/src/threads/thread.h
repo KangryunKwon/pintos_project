@@ -94,6 +94,7 @@ struct thread
     /* Shared between thread.c and synch.c. */
     struct list_elem elem;              /* List element. */
 
+
 #ifdef USERPROG
     /* Owned by userprog/process.c. */
     uint32_t *pagedir;                  /* Page directory. */
@@ -101,6 +102,12 @@ struct thread
 
     /* Owned by thread.c. */
     unsigned magic;                     /* Detects stack overflow. */
+
+
+    int init_priority;              /* 원래 우선순위 (donation 없을 때) */
+    struct lock *wait_on_lock;      /* 현재 대기 중인 lock (donation용) */
+    struct list donations;          /* 나에게 priority를 기부한 스레드 목록 */
+    struct list_elem donation_elem; /* donations 리스트 연결용 */
   };
 
 /* If false (default), use round-robin scheduler.
@@ -143,4 +150,11 @@ void thread_sleep(int64_t ticks);
 void thread_awake (int64_t current_tick);
 void update_next_tick_to_awake(int64_t ticks);
 int64_t get_next_tick_to_awake(void);
+
+bool thread_priority_more (const struct list_elem *a, const struct list_elem *b, void *aux);
+void thread_donate_priority (void);
+void thread_remove_donations (struct lock *lock);
+void thread_refresh_priority (void);
+void thread_test_preemption (void);
+
 #endif /* threads/thread.h */
