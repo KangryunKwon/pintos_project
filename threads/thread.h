@@ -87,23 +87,16 @@ struct thread
     enum thread_status status;          /* Thread state. */
     char name[16];                      /* Name (for debugging purposes). */
     uint8_t *stack;                     /* Saved stack pointer. */
-    int priority;                       /* Priority. */
+    int priority;
+    int original_priority;                       /* Priority. */
     struct list_elem allelem;           /* List element for all threads list. */
-	// [p1] Define a variable to store a ticks to wake up
-	int64_t wakeup;	// a ticks to wake up
-   // [p2-3] 
-    int niceness;
-    int recent_cpu;
+
+    int64_t wakeup_tick;			/*ADDED : wakeup_tick*/
     /* Shared between thread.c and synch.c. */
     struct list_elem elem;              /* List element. */
-
-	// [p2-2] For implementing the priority donation
-	int initial_priority;
-	struct lock *wait_on_lock;
-	struct list donations;
-	struct list_elem donation_elem;
-
-
+    struct lock *wait_on_lock;
+    struct list donations;
+    struct list_elem donation_elem;
 #ifdef USERPROG
     /* Owned by userprog/process.c. */
     uint32_t *pagedir;                  /* Page directory. */
@@ -137,34 +130,9 @@ const char *thread_name (void);
 void thread_exit (void) NO_RETURN;
 void thread_yield (void);
 
-// [p1] Add newly defined functions
-void thread_sleep(int64_t ticks);
-void thread_awake(int64_t ticks);
-
 /* Performs some operation on thread t, given auxiliary data AUX. */
 typedef void thread_action_func (struct thread *t, void *aux);
 void thread_foreach (thread_action_func *, void *);
-
-// [p2-1] Add newly defined functions
-bool compare_thread_priority (const struct list_elem *, const struct list_elem *, void *);
-void test_max_priority (void);
-
-// [p2-2] Add newly defined functions
-bool compare_donate_priority (const struct list_elem *, const struct list_elem *, void *);
-void donate_priority (void);
-void remove_lock_holder (struct lock *);
-void update_priority (void);
-
-// [p2-3] add newly defined functions
-/* mlfqs 관련 함수들 */
-void mlfqs_priority(struct thread *t);
-void mlfqs_cal_recent_cpu(struct thread *t);
-void mlfqs_cal_load_avg(void);
-void increase_recent_cpu(void);
-void recal_recent_cpu(void);
-void recal_priority(void);
-
-
 
 int thread_get_priority (void);
 void thread_set_priority (int);
@@ -174,4 +142,13 @@ void thread_set_nice (int);
 int thread_get_recent_cpu (void);
 int thread_get_load_avg (void);
 
+void thread_sleep(int64_t ticks);
+void thread_awake (int64_t current_tick);
+void update_next_tick_to_awake(int64_t ticks);
+int64_t get_next_tick_to_awake(void);
+bool thread_priority_cmp(const struct list_elem *a, const struct list_elem *b, void *aux);
+bool donation_priority_cmp(const struct list_elem *a, const struct list_elem *b, void *aux);
+void thread_donate_priority(void);
+void thread_remove_donations(struct lock *lock);
+void thread_refresh_priority(void);
 #endif /* threads/thread.h */
