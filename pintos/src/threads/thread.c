@@ -242,9 +242,12 @@ void thread_unblock(struct thread *t) {
   ASSERT(t->status == THREAD_BLOCKED);
   list_insert_ordered(&ready_list, &t->elem, thread_priority_more, NULL);
   t->status = THREAD_READY;
-
-  if (!intr_context() && t->priority > thread_current()->priority)
-    intr_yield_on_return();
+  if (t->priority > thread_current()->priority) {
+    if (intr_context())
+      intr_yield_on_return();
+    else
+      thread_yield();
+  }
   intr_set_level(old_level);
 }
 
